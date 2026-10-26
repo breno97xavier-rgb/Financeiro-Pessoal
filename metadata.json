@@ -1,0 +1,6 @@
+{
+  "name": "Gestão Financeira Mensal",
+  "description": "Site pessoal responsivo para gestão financeira mensal de receitas, despesas fixas, parcelamentos e transações diárias.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

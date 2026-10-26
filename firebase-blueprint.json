@@ -1,0 +1,215 @@
+{
+  "entities": {
+    "user": {
+      "title": "User",
+      "description": "User profile with preference configs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "nome": { "type": "string" },
+        "closing_day": { "type": "integer" },
+        "card_limit": { "type": "number" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "email", "nome", "closing_day", "card_limit", "created_at"]
+    },
+    "categoria": {
+      "title": "Categoria",
+      "description": "Category for income and expenses",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "nome": { "type": "string" },
+        "tipo": { "type": "string", "enum": ["receita", "despesa"] },
+        "cor": { "type": "string" },
+        "icone": { "type": "string" }
+      },
+      "required": ["id", "nome", "tipo", "cor"]
+    },
+    "receita": {
+      "title": "Receita",
+      "description": "Income entry, possibly recurring",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "nome": { "type": "string" },
+        "valor": { "type": "number" },
+        "categoria_id": { "type": "string" },
+        "recorrente": { "type": "boolean" },
+        "dia_recebimento": { "type": "integer" },
+        "ativa": { "type": "boolean" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "user_id", "nome", "valor", "categoria_id", "recorrente", "ativa", "created_at"]
+    },
+    "receita_recebida": {
+      "title": "ReceitaRecebida",
+      "description": "State tracking if a receta was received in a specific financial month",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "receita_id": { "type": "string" },
+        "mes_financeiro": { "type": "string" },
+        "data_pagamento": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "receita_id", "mes_financeiro", "data_pagamento"]
+    },
+    "despesa_fixa": {
+      "title": "DespesaFixa",
+      "description": "Fixed monthly expenses list",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "nome": { "type": "string" },
+        "valor": { "type": "number" },
+        "categoria_id": { "type": "string" },
+        "dia_vencimento": { "type": "integer" },
+        "forma_pagamento": { "type": "string" },
+        "ativa": { "type": "boolean" },
+        "observacao": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "user_id", "nome", "valor", "categoria_id", "dia_vencimento", "forma_pagamento", "ativa", "created_at"]
+    },
+    "despesa_paga": {
+      "title": "DespesaPaga",
+      "description": "State tracking if a despesa was paid in a given financial month",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "despesa_id": { "type": "string" },
+        "mes_financeiro": { "type": "string" },
+        "data_pagamento": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "despesa_id", "mes_financeiro", "data_pagamento"]
+    },
+    "parcelamento": {
+      "title": "Parcelamento",
+      "description": "Installments and active subscriptions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "nome": { "type": "string" },
+        "valor_parcela": { "type": "number" },
+        "categoria_id": { "type": "string" },
+        "forma_pagamento": { "type": "string" },
+        "tipo": { "type": "string", "enum": ["parcelado", "assinatura"] },
+        "data_primeira_cobranca": { "type": "string", "format": "date" },
+        "total_parcelas": { "type": "integer" },
+        "dia_cobranca": { "type": "integer" },
+        "ativa": { "type": "boolean" },
+        "observacao": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "user_id", "nome", "valor_parcela", "categoria_id", "forma_pagamento", "tipo", "data_primeira_cobranca", "dia_cobranca", "ativa", "created_at"]
+    },
+    "parcela_paga": {
+      "title": "ParcelaPaga",
+      "description": "Records representing a paid installment in a financial month",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "parcelamento_id": { "type": "string" },
+        "mes_financeiro": { "type": "string" },
+        "data_pagamento": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "parcelamento_id", "mes_financeiro", "data_pagamento"]
+    },
+    "transacao": {
+      "title": "Transacao",
+      "description": "Daily transactions ledgers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "nome": { "type": "string" },
+        "valor": { "type": "number" },
+        "categoria_id": { "type": "string" },
+        "forma_pagamento": { "type": "string" },
+        "data": { "type": "string", "format": "date" },
+        "observacao": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "user_id", "nome", "valor", "categoria_id", "forma_pagamento", "data", "created_at"]
+    },
+    "nota": {
+      "title": "Nota",
+      "description": "A financial freeform note helper",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "titulo": { "type": "string" },
+        "conteudo": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "user_id", "titulo", "conteudo", "created_at", "updated_at"]
+    },
+    "projecao": {
+      "title": "Projecao",
+      "description": "A saved scenario projection model",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "nome": { "type": "string" },
+        "mes_referencia": { "type": "string" },
+        "ajustes": { "type": "array" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "user_id", "nome", "mes_referencia", "ajustes", "created_at"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "Users document profiles"
+    },
+    "/categorias/{categoriaId}": {
+      "schema": "categoria",
+      "description": "Pre-defined or user-defined transaction categories"
+    },
+    "/receitas/{receitaId}": {
+      "schema": "receita",
+      "description": "Monthly or active income objects"
+    },
+    "/receitas_recebidas/{recordId}": {
+      "schema": "receita_recebida",
+      "description": "Status triggers of receipts cleared for a specific month"
+    },
+    "/despesas_fixas/{idx}": {
+      "schema": "despesa_fixa",
+      "description": "Monthly constant expense objects"
+    },
+    "/despesas_pagas/{recordId}": {
+      "schema": "despesa_paga",
+      "description": "Monthly clearance records of fixed expenses"
+    },
+    "/parcelamentos/{idx}": {
+      "schema": "parcelamento",
+      "description": "Amortized debts or ongoing subscriptions"
+    },
+    "/parcelas_pagas/{idx}": {
+      "schema": "parcela_paga",
+      "description": "Monthly checking clearance registers of installments"
+    },
+    "/transacoes/{idx}": {
+      "schema": "transacao",
+      "description": "Everyday simple tracking receipts"
+    },
+    "/notas/{idx}": {
+      "schema": "nota",
+      "description": "Personal notation documents"
+    },
+    "/projecoes/{idx}": {
+      "schema": "projecao",
+      "description": "User scenario forecasts"
+    }
+  }
+}
